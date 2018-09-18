@@ -13,6 +13,10 @@ class SpiderMain(object):
         self.downloader = html_downloader.HtmlDownloader()
         self.outputer = img_outputer.ImgOutputer()
         
+
+    
+    
+    
     def craw(self,header):
         page_number = 1
         
@@ -21,27 +25,41 @@ class SpiderMain(object):
             while page_number<=2:
                 root_url = "http://www.meizitu.com/a/more_%d.html" %(page_number)
                 page_html = self.downloader.downloade(header,root_url)
-                enter_page_url = self.parser.parse_enter_page(page_html)
-                #print(html_cont)
-                #print(len(each_page_url))
-                self.url.add_new_urls(enter_page_url)
-                page_number = page_number+1
-            
+                enter_url = self.parser.parse_enter_url(page_html)
+                #print(page_html)
+                #print(root_url)
+                #print(len(enter_page_url))
+                self.url.add_new_enter_urls(enter_url)
+                page_number = page_number + 1
         except:
-                print("爬取入口页面失败")
+            print("爬取入口页面失败")
                 
         
-        while self.urls.has_new_url():
-            new_url = self.urls.get_new_url()
-            page_html = self.downloader.downloade(header,new_url)
-            img_data = self.parser.parser_img_url(page_html)
-            
-            
+        try:   
+            while self.url.has_new_enter_url():
+                new_url = self.url.get_new_enter_url()
+                page_html = self.downloader.downloade(header,new_url)           
+                img_url = self.parser.parser_img_url(page_html)
+                num = self.url.add_new_img_urls(img_url)
+                print(num)
+                #print(img_url)
+        except:
+            print("爬取图片页面失败")   
             
             
         
-        
-        
+        img_num = 1
+        try:
+            while self.has_new_img_url():
+                img_url = self.url.get_new_img_url()
+                self.outputer.output(img_url,img_num)
+                img_num = img_num + 1     
+            
+        except:
+            print("下载图片失败")
+            
+                
+                
         
 
 
