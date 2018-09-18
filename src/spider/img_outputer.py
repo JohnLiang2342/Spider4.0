@@ -1,0 +1,7 @@
+
+
+
+class ImgOutputer(object):
+    pass
+
+
