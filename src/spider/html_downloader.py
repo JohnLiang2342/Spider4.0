@@ -10,6 +10,7 @@ class HtmlDownloader(object):
         
         page_html = requests.get(url,headers = header)
         
+        print(page_html.status_code)
         if page_html.status_code != 200:
             return None
         page_html.encoding = 'gb2312'

@@ -2,6 +2,9 @@
 
 
 from spider import url_manager, html_parser, html_downloader, img_outputer
+import time
+
+
 
 
 class SpiderMain(object):
@@ -14,49 +17,37 @@ class SpiderMain(object):
         self.outputer = img_outputer.ImgOutputer()
         
 
-    
-    
+
     
     def craw(self,header):
-        page_number = 1
         
-        #循环的首页页数
-        try:
-            while page_number<=2:
-                root_url = "http://www.meizitu.com/a/more_%d.html" %(page_number)
-                page_html = self.downloader.downloade(header,root_url)
-                enter_url = self.parser.parse_enter_url(page_html)
-                #print(page_html)
-                #print(root_url)
-                #print(len(enter_page_url))
-                self.url.add_new_enter_urls(enter_url)
-                page_number = page_number + 1
-        except:
-            print("爬取入口页面失败")
-                
+        self.url.get_All_enter_url(header)
+        time.sleep(5)    
+        print(self.url.has_new_enter_url())                 
         
-        try:   
-            while self.url.has_new_enter_url():
-                new_url = self.url.get_new_enter_url()
-                page_html = self.downloader.downloade(header,new_url)           
-                img_url = self.parser.parser_img_url(page_html)
-                num = self.url.add_new_img_urls(img_url)
-                print(num)
-                #print(img_url)
-        except:
-            print("爬取图片页面失败")   
+        while self.url.has_new_enter_url():
+            new_url = self.url.get_new_enter_url()
+            page_html = self.downloader.downloade(header,new_url)        
+            img_title,img_urls = self.parser.parser_img_urlAndtitle(page_html)
+            print(img_title)
+            print(img_urls)
+            folder_name = self.outputer.creat_img_folder(img_title)
+            self.outputer.download_img(img_urls,folder_name)
+            time.sleep(5)
+          
             
             
         
-        img_num = 1
-        try:
-            while self.has_new_img_url():
-                img_url = self.url.get_new_img_url()
-                self.outputer.output(img_url,img_num)
-                img_num = img_num + 1     
-            
-        except:
-            print("下载图片失败")
+#         img_num = 1
+#         try:
+#             while self.has_new_img_url():
+#                 img_url = self.url.get_new_img_url()
+#                 self.outputer.output(img_url,img_num)
+#                 img_num = img_num + 1     
+#                 
+#             
+#         except:
+#             print("下载图片失败")
             
                 
                 
@@ -65,7 +56,7 @@ class SpiderMain(object):
 
 
 if __name__ == "__main__":
-    
+    #Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36
     header = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36'}
 # 爬取的预览页面数量
 
