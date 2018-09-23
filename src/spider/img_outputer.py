@@ -37,7 +37,7 @@ class ImgOutputer(object):
                 f.write(img_data.content)
                 f.close()
             num = num+1
-            time.sleep(5)
+            time.sleep(7)
             
     
     

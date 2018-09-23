@@ -67,23 +67,26 @@ class UrlManager(object):
         return img_url
 
     
-    def get_All_enter_url(self,header):
-        page_number = 1
-        #循环的首页页数
-        #self.url = url_manager.UrlManager()
-        self.parser = html_parser.HtmlParser()
-        self.downloader = html_downloader.HtmlDownloader()
-        while page_number<=1:
-            root_url = "http://www.meizitu.com/a/more_%d.html" %(page_number)
-            print(root_url)
-            page_html = self.downloader.downloade(header,root_url)
-            enter_url = self.parser.parse_enter_url(page_html)
-            print(enter_url)
-            self.add_new_enter_urls(enter_url)
-            page_number = page_number + 1
-            
-        
-        
+#     def get_All_enter_url(self,header):
+#         
+#         #循环的首页页数
+#         #self.url = url_manager.UrlManager()
+#         self.parser = html_parser.HtmlParser()
+#         self.downloader = html_downloader.HtmlDownloader()
+#         page_number = 1
+#         try：
+#             while page_number<=1:
+#                 root_url = "http://www.meizitu.com/a/more_%d.html" %(page_number)
+#                 print(root_url)
+#                 page_html = self.downloader.downloade(header,root_url)
+#                 enter_url = self.parser.parse_enter_url(page_html)
+#                 print(enter_url)
+#                 self.add_new_enter_urls(enter_url)
+#                 page_number = page_number + 1
+#             
+#         
+#         except:
+#             print('爬取入口url失败')
     
     
     
